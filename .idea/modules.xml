@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/JsonBatch.iml" filepath="$PROJECT_DIR$/.idea/modules/JsonBatch.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/JsonBatch_main.iml" filepath="$PROJECT_DIR$/.idea/modules/JsonBatch_main.iml" group="JsonBatch" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/JsonBatch_test.iml" filepath="$PROJECT_DIR$/.idea/modules/JsonBatch_test.iml" group="JsonBatch" />
+    </modules>
+  </component>
+</project>
