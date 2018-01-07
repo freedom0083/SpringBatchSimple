@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.task.TaskExecutor;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import javax.sql.DataSource;
@@ -42,12 +43,6 @@ public class StepConfiguration {
     @Autowired
     public JdbcBatchItemWriter<Response> responseFileWriter;
 
-    @Autowired
-    public ThreadPoolTaskExecutor taskExecutor;
-
-    @Autowired
-    public Tasklet tasklet;
-
     @Bean
     public Step processResponseStep() {
         return stepBuilderFactory.get("processResponseStep")
@@ -55,6 +50,8 @@ public class StepConfiguration {
                 .reader(responseFileReader)
                 .processor(responseFileProcessor)
                 .writer(responseFileWriter)
+                .taskExecutor(taskExecutor())
+                .throttleLimit(4)
                 .build();
     }
 
@@ -94,5 +91,14 @@ public class StepConfiguration {
         writer.setSql("INSERT INTO people (first_name, last_name) VALUES (:firstName, :lastName)");
         writer.setDataSource(dataSource);
         return writer;
+    }
+
+    @Bean
+    public TaskExecutor taskExecutor() {
+        ThreadPoolTaskExecutor taskExecutor = new ThreadPoolTaskExecutor();
+        taskExecutor.setMaxPoolSize(10);
+        taskExecutor.setCorePoolSize(10);
+        taskExecutor.afterPropertiesSet();
+        return taskExecutor;
     }
 }
