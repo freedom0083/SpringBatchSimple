@@ -13,10 +13,10 @@ public class SampleProcessor implements ItemProcessor<Response, Response> {
     @Override
     public Response process(Response response) throws Exception {
         logger.info("*************** Processing... ***************");
-        String firstName = response.getFirstName().toUpperCase();
-        String lastName = response.getLastName().toUpperCase();
+        String payerAccName = response.getPayerAccName().toUpperCase();
+        String payerBankName = response.getPayerBankName().toUpperCase();
 
-        Response transformedResponse = new Response(firstName, lastName);
+        Response transformedResponse = new Response(payerAccName, payerBankName);
 
         logger.info("Converting (" + response + ") into (" + transformedResponse + ")");
 
@@ -29,8 +29,11 @@ public class SampleProcessor implements ItemProcessor<Response, Response> {
     }
 
     @BeforeProcess
-    public void beforeProcess() {
+    public void beforeProcess(Response response) {
+
         logger.info("*************** Processing start... ***************");
+
+        logger.info("Before process get name: " + response.getPayerBankName());
     }
 
 }

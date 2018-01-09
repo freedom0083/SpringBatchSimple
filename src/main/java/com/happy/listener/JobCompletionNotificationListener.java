@@ -30,15 +30,15 @@ public class JobCompletionNotificationListener extends JobExecutionListenerSuppo
         if (jobExecution.getStatus() == BatchStatus.COMPLETED) {
             logger.info("!!! JOB FINISHED! Time to verify the results");
 
-            List<Response> results = jdbcTemplate.query("SELECT first_name, last_name FROM people", new RowMapper<Response>() {
+            List<Response> results = jdbcTemplate.query("SELECT PAYER_ACC_NAME, PAYER_BANK_NAME FROM people", new RowMapper<Response>() {
                 @Override
                 public Response mapRow(ResultSet rs, int row) throws SQLException {
                     return new Response(rs.getString(1), rs.getString(2));
                 }
             });
 
-            for (Response person : results) {
-                logger.info("Found <" + person.getFirstName() + ", " + person.getLastName() + "> in the database.");
+            for (Response response : results) {
+                logger.info("Found <" + response.getPayerAccName() + ", " + response.getPayerBankName() + "> in the database.");
             }
 
         }

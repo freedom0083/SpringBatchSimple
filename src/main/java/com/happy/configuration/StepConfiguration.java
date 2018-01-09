@@ -59,13 +59,14 @@ public class StepConfiguration {
     public ItemReader<Response> responseFileReader() {
         logger.info("*************** Reading phase ***************");
         FlatFileItemReader<Response> reader = new FlatFileItemReader<Response>();
-        reader.setResource(new ClassPathResource("response.txt"));
+        //reader.setResource(new ClassPathResource("test-file1.txt"));
+        reader.setResource(new ClassPathResource("file:/resources/test/"));
 
         DefaultLineMapper map = new DefaultLineMapper();
 
         DelimitedLineTokenizer tokenizer = new DelimitedLineTokenizer();
         tokenizer.setDelimiter("|");
-        tokenizer.setNames(new String[]{"firstName", "lastName"});
+        tokenizer.setNames(new String[]{"ID", "contractNbr", "BATCH_ID", "BUSINESS_ID", "RETURN_CODE", "D_FLAG", "DD_FLAG_BATCH", "GC_TYPE", "AMOUNT", "DD_REQ_SN", "DEAL_INFO", "PAYER_BANK_CODE", "PAYER_BANK_REGIN_CODE", "PAYER_BANK_NAME", "PAYER_ACC_TYPE", "PAYER_ACC_COMPANY_TYPE", "PAYER_ACC_NO", "PAYER_ACC_NAME", "PAYER_ID_CARD_TYPE", "PAYER_ID_CARD_NO", "CURRENCY_TYPE", "DD_SIGN", "TRANS_SN", "REMARK", "SYS_REF_CODE", "RESULT_INFO", "SOURCE_ROW_IDX", "ACC_BANK_CODE", "ID_CATEGORY", "PAIRED_TO_DD_REQUEST", "ID_DD_REQ"});
 
         map.setLineTokenizer(tokenizer);
 
@@ -88,7 +89,9 @@ public class StepConfiguration {
     public JdbcBatchItemWriter<Response> responseFileWriter() {
         JdbcBatchItemWriter<Response> writer = new JdbcBatchItemWriter<Response>();
         writer.setItemSqlParameterSourceProvider(new BeanPropertyItemSqlParameterSourceProvider<Response>());
-        writer.setSql("INSERT INTO people (first_name, last_name) VALUES (:firstName, :lastName)");
+        writer.setSql("INSERT INTO PEOPLE (ID, CONTRACT_NBR, BATCH_ID, BUSINESS_ID, RETURN_CODE, DD_FLAG, DD_FLAG_BATCH, GC_TYPE, AMOUNT, DD_REQ_SN, DEAL_INFO, PAYER_BANK_CODE, PAYER_BANK_REGIN_CODE, PAYER_BANK_NAME, PAYER_ACC_TYPE, PAYER_ACC_COMPANY_TYPE, PAYER_ACC_NO, PAYER_ACC_NAME, PAYER_ID_CARD_TYPE, PAYER_ID_CARD_NO, CURRENCY_TYPE, DD_SIGN, TRANS_SN, REMARK, SYS_REF_CODE, RESULT_INFO, SOURCE_ROW_IDX, ACC_BANK_CODE, ID_CATEGORY, PAIRED_TO_DD_REQUEST, ID_DD_REQ)" +
+                " VALUES" +
+                " (:id, :contractNbr, :batchId, :businessId, :returnCode, :ddFlag, :ddFlagBatch, :gcType, :amount, :ddReqSn, :dealInfo, :payerBankCode, :payerBankReginCode, :payerBankName, :payerAccType, :payerAccCompanyType, :payerAccNo, :payerAccName, :payerIdCardType, :payerIdCardNo, :currencyType, :ddSign, :transSn, :remark, :sysRefCode, :resultInfo, :sourceRowIdx, :accBankCode, :idCategory, :pairedToDdRequest, :idDdReq)");
         writer.setDataSource(dataSource);
         return writer;
     }
@@ -97,8 +100,7 @@ public class StepConfiguration {
     public TaskExecutor taskExecutor() {
         ThreadPoolTaskExecutor taskExecutor = new ThreadPoolTaskExecutor();
         taskExecutor.setMaxPoolSize(10);
-        taskExecutor.setCorePoolSize(10);
-        taskExecutor.afterPropertiesSet();
+        taskExecutor.setCorePoolSize(6);
         return taskExecutor;
     }
 }
