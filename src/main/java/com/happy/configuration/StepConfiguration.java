@@ -12,9 +12,11 @@ import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.database.BeanPropertyItemSqlParameterSourceProvider;
 import org.springframework.batch.item.database.JdbcBatchItemWriter;
 import org.springframework.batch.item.file.FlatFileItemReader;
+import org.springframework.batch.item.file.MultiResourceItemReader;
 import org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper;
 import org.springframework.batch.item.file.mapping.DefaultLineMapper;
 import org.springframework.batch.item.file.transform.DelimitedLineTokenizer;
+import org.springframework.batch.item.xml.StaxEventItemReader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -55,12 +57,22 @@ public class StepConfiguration {
                 .build();
     }
 
+    public StaxEventItemReader xmlReader() {
+        StaxEventItemReader xmlReader = new StaxEventItemReader();
+        xmlReader.setResource(new ClassPathResource("xml_data.xml"));
+        xmlReader.setFragmentRootElementName("info");
+
+        return xmlReader;
+    }
+
     @Bean
     public ItemReader<Response> responseFileReader() {
         logger.info("*************** Reading phase ***************");
         FlatFileItemReader<Response> reader = new FlatFileItemReader<Response>();
+        MultiResourceItemReader multiReader = new MultiResourceItemReader();
         //reader.setResource(new ClassPathResource("test-file1.txt"));
-        reader.setResource(new ClassPathResource("file:/resources/test/"));
+        //reader.setResource(new ClassPathResource("file:/resources/test/"));
+        multiReader.setResources();
 
         DefaultLineMapper map = new DefaultLineMapper();
 
@@ -88,12 +100,8 @@ public class StepConfiguration {
     @Bean
     public JdbcBatchItemWriter<Response> responseFileWriter() {
         JdbcBatchItemWriter<Response> writer = new JdbcBatchItemWriter<Response>();
-        writer.setItemSqlParameterSourceProvider(new BeanPropertyItemSqlParameterSourceProvider<Response>());
-        writer.setSql("INSERT INTO PEOPLE (ID, CONTRACT_NBR, BATCH_ID, BUSINESS_ID, RETURN_CODE, DD_FLAG, DD_FLAG_BATCH, GC_TYPE, AMOUNT, DD_REQ_SN, DEAL_INFO, PAYER_BANK_CODE, PAYER_BANK_REGIN_CODE, PAYER_BANK_NAME, PAYER_ACC_TYPE, PAYER_ACC_COMPANY_TYPE, PAYER_ACC_NO, PAYER_ACC_NAME, PAYER_ID_CARD_TYPE, PAYER_ID_CARD_NO, CURRENCY_TYPE, DD_SIGN, TRANS_SN, REMARK, SYS_REF_CODE, RESULT_INFO, SOURCE_ROW_IDX, ACC_BANK_CODE, ID_CATEGORY, PAIRED_TO_DD_REQUEST, ID_DD_REQ)" +
-                " VALUES" +
-                " (:id, :contractNbr, :batchId, :businessId, :returnCode, :ddFlag, :ddFlagBatch, :gcType, :amount, :ddReqSn, :dealInfo, :payerBankCode, :payerBankReginCode, :payerBankName, :payerAccType, :payerAccCompanyType, :payerAccNo, :payerAccName, :payerIdCardType, :payerIdCardNo, :currencyType, :ddSign, :transSn, :remark, :sysRefCode, :resultInfo, :sourceRowIdx, :accBankCode, :idCategory, :pairedToDdRequest, :idDdReq)");
-        writer.setDataSource(dataSource);
-        return writer;
+
+        return null;
     }
 
     @Bean

@@ -7,6 +7,9 @@ sourceCompatibility = 1.8
 
 repositories {
     mavenCentral()
+    maven {
+        url "http://alm.homecredit.cn/nexus/content/repositories/releases"
+    }
 }
 
 dependencies {
@@ -17,5 +20,7 @@ dependencies {
     compile group: 'org.codehaus.jackson', name: 'jackson-mapper-asl', version: '1.9.13'
     compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.9.3'
     compile group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.9.3'
+    compile group: 'com.oracle', name: 'ojdbc6', version: '11.2.0.3'
+    compile group: 'com.oracle', name: 'orai18n', version: '11.2.0.3'
 
 }

@@ -33,12 +33,12 @@ public class JobCompletionNotificationListener extends JobExecutionListenerSuppo
             List<Response> results = jdbcTemplate.query("SELECT PAYER_ACC_NAME, PAYER_BANK_NAME FROM people", new RowMapper<Response>() {
                 @Override
                 public Response mapRow(ResultSet rs, int row) throws SQLException {
-                    return new Response(rs.getString(1), rs.getString(2));
+                    return new Response();
                 }
             });
 
             for (Response response : results) {
-                logger.info("Found <" + response.getPayerAccName() + ", " + response.getPayerBankName() + "> in the database.");
+                //logger.info("Found <" + response.getPayerAccName() + ", " + response.getPayerBankName() + "> in the database.");
             }
 
         }
