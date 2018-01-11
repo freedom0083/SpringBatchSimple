@@ -21,14 +21,14 @@ public class JobConfiguration {
     public JobBuilderFactory jobBuilderFactory;
 
     @Autowired
-    public Step processResponseStep;
+    public Step processXMLResponseStep;
 
     @Bean
     public Job processResponseFileJob(JobCompletionNotificationListener listener) {
         return jobBuilderFactory.get("processResponseFileJob")
                 .incrementer(new RunIdIncrementer())
                 .listener(listener)
-                .flow(processResponseStep)
+                .flow(processXMLResponseStep)
                 .end()
                 .build();
     }
