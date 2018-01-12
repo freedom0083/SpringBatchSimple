@@ -27,6 +27,7 @@ public class JobCompletionNotificationListener extends JobExecutionListenerSuppo
 
     @Override
     public void afterJob(JobExecution jobExecution) {
+        /*
         if (jobExecution.getStatus() == BatchStatus.COMPLETED) {
             logger.info("!!! JOB FINISHED! Time to verify the results");
 
@@ -41,6 +42,6 @@ public class JobCompletionNotificationListener extends JobExecutionListenerSuppo
                 //logger.info("Found <" + response.getPayerAccName() + ", " + response.getPayerBankName() + "> in the database.");
             }
 
-        }
+        }*/
     }
 }

@@ -38,12 +38,6 @@ public class XMLResponseFileProcessor implements ItemProcessor<InputResponse, Li
                     response.setReturnCode(splitArray[1]);
                     response.setResultInfo(splitArray[2]);
                     response.setInsertTime(time);
-
-                    logger.info("Transaction ID is: {}.", response.getId());
-                    logger.info("Return code is: {}.", response.getReturnCode());
-                    logger.info("Return message is: {}.", response.getResultInfo());
-                    logger.info("Insert time is: {}.", response.getInsertTime());
-
                 }
 
                 responseList.add(response);

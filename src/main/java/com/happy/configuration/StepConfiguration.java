@@ -1,9 +1,10 @@
 package com.happy.configuration;
 
+import com.happy.database.dao.ResponseDao;
 import com.happy.domain.InputResponse;
 import com.happy.domain.Response;
 import com.happy.processor.XMLResponseFileProcessor;
-import com.happy.reader.XMLFileReader;
+import com.happy.writer.ResponseWriter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.batch.core.Step;
@@ -15,29 +16,29 @@ import org.springframework.batch.item.xml.StaxEventItemReader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.task.TaskExecutor;
-import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
-import javax.sql.DataSource;
 import java.util.List;
 
 @Configuration
 @EnableBatchProcessing
 public class StepConfiguration {
     private Logger logger = LoggerFactory.getLogger(StepConfiguration.class);
+
     @Autowired
     public StepBuilderFactory stepBuilderFactory;
 
     @Autowired
-    public DataSource dataSource;
+    public StaxEventItemReader<InputResponse> xmlResponseFileReader;
 
     @Autowired
-    public XMLFileReader xmlFileReader;
+    public XMLResponseFileProcessor xmlResponseFileProcessor;
 
     @Autowired
-    public XMLResponseFileProcessor xmlFileProcessor;
+    public ItemWriter responseWriter;
+    @Autowired
+    private ResponseDao responseDao;
 
     //@Autowired
     //public ItemWriter<InputResponse> xmlFileWriter;
@@ -46,31 +47,17 @@ public class StepConfiguration {
     public Step processXMLResponseStep() {
         return stepBuilderFactory.get("processXMLResponseStep")
                 .<InputResponse, List<Response>>chunk(10)
-                .reader(xmlFileReader)
-                .processor(xmlFileProcessor)
+                .reader(xmlResponseFileReader)
+                .processor(xmlResponseFileProcessor)
                 .writer(xmlFileWriter())
                 //.taskExecutor(taskExecutor())
                 //.throttleLimit(4)
                 .build();
     }
 
-    /*
-    @Bean
-    public ItemReader<InputResponse> xmlFileReader() {
-
-        StaxEventItemReader xmlReader = new StaxEventItemReader();
-        xmlReader.setResource(new ClassPathResource("xml_data.xml"));
-        xmlReader.setFragmentRootElementName("detail_info");
-
-        Jaxb2Marshaller unmarshaller = new Jaxb2Marshaller();
-        unmarshaller.setClassesToBeBound(InputResponse.class);
-        xmlReader.setUnmarshaller(unmarshaller);
-
-        return xmlReader;
-    }*/
-
 
     public ItemWriter<List<Response>> xmlFileWriter() {
+        //responseDao.insertResponseData(items);
         logger.info(" Writing start...");
         return null;
     }
