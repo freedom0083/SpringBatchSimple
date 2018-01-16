@@ -16,6 +16,7 @@ public class XMLFileReader<T> extends StaxEventItemReader<T> {
 
     @Override
     public void afterPropertiesSet() throws Exception {
+
         setResource(new ClassPathResource("XICBC0020000012018010902.xml"));
         setFragmentRootElementName(ROOT_ELEMENT_NAME);
 

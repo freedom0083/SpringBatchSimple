@@ -3,12 +3,14 @@ package com.happy.configuration;
 import com.happy.domain.InputResponse;
 import com.happy.domain.Response;
 import com.happy.processor.XMLResponseFileProcessor;
+import com.happy.reader.ResponseFilesReader;
 import com.happy.writer.ResponseWriter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
+import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.item.xml.StaxEventItemReader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -17,7 +19,6 @@ import org.springframework.context.annotation.Import;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
-import javax.annotation.Resource;
 import java.util.List;
 
 @Configuration
@@ -27,10 +28,14 @@ public class StepConfiguration {
     private Logger logger = LoggerFactory.getLogger(StepConfiguration.class);
 
     @Autowired
+    @StepScope
     public StaxEventItemReader<InputResponse> xmlResponseFileReader;
 
     @Autowired
     public XMLResponseFileProcessor xmlResponseFileProcessor;
+
+    @Autowired
+    private ResponseFilesReader responseFilesReader;
 
     @Autowired
     public ResponseWriter responseWriter;
@@ -42,7 +47,7 @@ public class StepConfiguration {
     public Step processXMLResponseStep() {
         return stepBuilderFactory.get("processXMLResponseStep1")
                 .<InputResponse, List<Response>>chunk(10)
-                .reader(xmlResponseFileReader)
+                .reader(responseFilesReader.reader())
                 .processor(xmlResponseFileProcessor)
                 .writer(xmlFileWriter())
                 //.taskExecutor(taskExecutor())
