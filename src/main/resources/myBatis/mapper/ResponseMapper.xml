@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.happy.database.mapper.ResponseMapper">
+    <parameterMap id="responseInformationParameterMap" type="Map">
+        <parameter property="batchId" mode="IN" javaType="Long" jdbcType="BIGINT"/>
+        <parameter property="list" mode="IN" javaType="List" jdbcType="ARRAY"
+                   typeHandler="com.happy.database.handler.OracleArrayTypeHandler"/>
+        <parameter property="poFlag" mode="OUT" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+    </parameterMap>
+
+    <select id="getBatchFile">
+SELECT BATCH.* FROM T_DD_BATCH BATCH WHERE batch.FILES_STATUS = 6 AND batch.BATCH_ID = 61797168
+
+    </select>
+
+</mapper>

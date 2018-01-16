@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.happy.database.mapper.BatchMapper">
+    <resultMap id="BaseResultMap" type="com.happy.database.entity.Batch">
+        <id column="BATCH_ID" jdbcType="DECIMAL" property="batchId"/>
+        <result column="FILE_NAME" jdbcType="VARCHAR" property="fileName"/>
+        <result column="CLIENT_IP" jdbcType="VARCHAR" property="clientIp"/>
+        <result column="CLIENT_MACHINE_NAME" jdbcType="VARCHAR" property="clientMachineName"/>
+        <result column="CDATE" jdbcType="TIMESTAMP" property="cdate"/>
+        <result column="RECORDS_COUNT" jdbcType="DECIMAL" property="recordsCount"/>
+        <result column="NOTE" jdbcType="VARCHAR" property="note"/>
+        <result column="GC_TYPE" jdbcType="VARCHAR" property="gcType"/>
+        <result column="BUSSNESS_TYPE" jdbcType="DECIMAL" property="bussnessType"/>
+        <result column="FILES_STATUS" jdbcType="DECIMAL" property="filesStatus"/>
+        <result column="FILES_TYPE" jdbcType="DECIMAL" property="filesType"/>
+        <result column="DD_TYPE" jdbcType="DECIMAL" property="ddType"/>
+        <result column="EDATE" jdbcType="TIMESTAMP" property="edate"/>
+        <result column="STATUS_CHANGES" jdbcType="VARCHAR" property="statusChanges"/>
+        <result column="ID_BATCH" jdbcType="DECIMAL" property="idBatch"/>
+        <result column="SEND_TIME" jdbcType="TIMESTAMP" property="sendTime"/>
+        <result column="ID_CATEGORY" jdbcType="DECIMAL" property="idCategory"/>
+        <result column="DD_CATEGORY" jdbcType="VARCHAR" property="ddCategory"/>
+        <result column="ID_BATCH_FROM_HOMER" jdbcType="DECIMAL" property="idBatchFromHomer"/>
+    </resultMap>
+
+    <select id="getBatchFileNames" resultMap="BaseResultMap">
+        select batch_id, file_name
+        from T_DD_BATCH
+        where FILES_STATUS = 6 AND BATCH_ID = 61797168
+    </select>
+
+</mapper>

@@ -22,7 +22,7 @@ public class XMLResponseFileProcessor implements ItemProcessor<InputResponse, Li
         logger.info("Information in XLM is: {} ", item.getInfoList().toString());
         List<Response> responseList = null;
         List<String> infoList = item.getInfoList();
-        Timestamp time = null;
+        Timestamp time;
 
         if (infoList != null && infoList.size() != 0) {
             responseList = new ArrayList<>();
@@ -43,8 +43,6 @@ public class XMLResponseFileProcessor implements ItemProcessor<InputResponse, Li
                 responseList.add(response);
             }
         }
-
-        logger.info("***************** XML parse completed *****************");
 
         return responseList;
     }
